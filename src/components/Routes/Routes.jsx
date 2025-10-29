@@ -2,13 +2,12 @@ import { createBrowserRouter } from "react-router";
 import Root from "../Root/Root";
 import HomeLayout from "../../Layout/HomeLayout";
 import About from "../About/About";
-import LogIn from "../LogIn/LogIn";
 import Career from "../Career/Career";
-import Categories from "../Categories/Categories";
 import CategoriesNews from "../CategoriesNews/CategoriesNews";
 import NewsDetails from "../NewsDetails/NewsDetails";
-import Sign_In from "../Sign_In/Sign_In";
-
+import LogIn from "../LogIn/LogIn";
+import Register from "../Register/Register";
+import AuthLayout from "../../Layout/AuthLayout";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -17,15 +16,12 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
+                loader: () => fetch('/news.json'),
                 Component: HomeLayout
             },
             {
                 path: '/about',
                 Component: About
-            },
-            {
-                path: '/login',
-                Component: LogIn
             },
             {
                 path: '/career',
@@ -36,17 +32,26 @@ export const router = createBrowserRouter([
                 loader: () => fetch('/news.json'),
                 Component: CategoriesNews
 
+            }
+        ]
+    },
+    {
+        path: '/auth',
+        element: <AuthLayout />,
+        children: [
+            {
+                path: '/auth/logIn',
+                Component: LogIn
             },
             {
-                path: '/newDetails/:id',
-                loader: () => fetch('/news.json'),
-                Component: NewsDetails
-            }, 
-            {
-             path:'/signIn',
-             Component:Sign_In
+                path: '/auth/register',
+                Component: Register
             }
-
         ]
+    },
+    {
+        path: '/newDetails/:id',
+        loader: () => fetch('/news.json'),
+        Component: NewsDetails
     }
 ])

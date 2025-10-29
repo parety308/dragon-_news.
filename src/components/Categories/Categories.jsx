@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLoaderData } from 'react-router';
-
+import thum from '../../assets/demo-card-thumbnail.png'
 const Categories = () => {
     const categories=useLoaderData();
     return (
@@ -10,6 +10,7 @@ const Categories = () => {
                 {
                     categories.map(cat => <NavLink to={`/categories/${cat.id}`} key={cat.id} className={'bg-base-100 border-gray-100 btn text-xl px-1 py-2 hover:bg-base-300'} >{cat.name}</NavLink>)
                 }
+                <img className='mt-5' src={thum} alt="" />
             </div></div>
     );
 };
