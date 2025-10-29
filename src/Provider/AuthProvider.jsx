@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { createContext } from 'react';
 import app from '../firebase/firebase.init';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const auth = getAuth(app);
     const [user, setUser] = useState(null);
     const createUser = (email, password) => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(result => {
-                setUser(result.user);
-            })
-            .catch(error => console.log(error));
+        return createUserWithEmailAndPassword(auth, email, password);
 
     };
+    const createUserG=(provider)=>{
+        return signInWithPopup(auth,provider);
+
+    }
     useEffect(() => {
         const unSuscribe = onAuthStateChanged((auth), (currentUser) => {
             setUser(currentUser);
@@ -22,18 +22,15 @@ const AuthProvider = ({ children }) => {
             unSuscribe();
         }
     }, []);
-    console.log(user);
+    const updateUser = (userData) => {
+        return updateProfile(auth.currentUser, userData);
+    };
     const loginUser = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then(res => console.log(res))
-            .catch(error => console.log(error));
+        return signInWithEmailAndPassword(auth, email, password);
+        ;
     };
     const logOutUser = () => {
-        signOut(auth)
-        .then(
-            alert('LogOut SuccessFully')
-        )
-        .catch(error=>console.log(error));
+        return signOut(auth);
     }
     const authData = {
         user,
@@ -41,7 +38,8 @@ const AuthProvider = ({ children }) => {
         createUser,
         loginUser,
         logOutUser,
-
+        updateUser,
+        createUserG,
     };
     return (
         <div>

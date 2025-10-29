@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { use } from 'react';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import swimImg from '../../assets/swimming.png';
 import clsImg from '../../assets/class.png';
 import playImg from '../../assets/playground.png';
 import bgImg from '../../assets/bg.png'
+import { GoogleAuthProvider } from 'firebase/auth';
+import { AuthContext } from '../../Provider/AuthProvider';
 const RightAside = () => {
+    const {createUserG}=use(AuthContext);
+    const googleProvider= new GoogleAuthProvider();
     const handleGoogleLogIn = () => {
-        console.log('Google log in ');
-    }
+        createUserG(googleProvider)
+        .then(res=>console.log(res.user))
+        .catch(error=>console.log(error));
+    };
     const handleGithubLogIn = () => {
         console.log('Github log in ');
     }

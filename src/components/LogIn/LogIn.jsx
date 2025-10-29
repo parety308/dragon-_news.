@@ -1,14 +1,24 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import { AuthContext } from '../../Provider/AuthProvider';
+import { useNavigate } from 'react-router';
 
 const LogIn = () => {
+    const location = useLocation();
+    const Navigate = useNavigate();
     const { loginUser } = use(AuthContext);
+    const [errors, setErrors] = useState('');
     const handleLogIn = (event) => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
-        loginUser(email,password);
+        setErrors('');
+        loginUser(email, password)
+            .then(res => {
+                console.log(res);
+                Navigate(`${location.state ? location.state : '/'}`)
+            })
+            .catch(error => setErrors(error.message));
     }
     return (
         <div className="flex flex-col justify-center  min-h-screen rounded-xl">
@@ -19,15 +29,26 @@ const LogIn = () => {
                 <div className="card  w-full max-w-lg shrink-0  ">
                     <div className="card-body ">
                         <form onSubmit={handleLogIn} >
-                        <fieldset className="fieldset text-xl">
-                            <label className="label ">Email</label>
-                            <input type="email" name='email' className="input" placeholder="Email" />
-                            <label className="label">Password</label>
-                            <input type="password" name='password' className="input" placeholder="Password" />
-                            <div><a className="link link-hover">Forgot password?</a></div>
-                            <div>Haven't Account ?. go to <Link to='/auth/register' className='link link-hover'>registration</Link>.</div>
-                            <button type='submit' className="btn btn-neutral mt-4">Login</button>
-                        </fieldset>
+                            <fieldset className="fieldset text-xl">
+                                <label className="label ">Email</label>
+                                <input
+                                    type="email"
+                                    name='email'
+                                    className="input"
+                                    placeholder="Email"
+                                    required />
+                                <label className="label">Password</label>
+                                <input type="password"
+                                    name='password'
+                                    className="input"
+                                    placeholder="Password"
+                                    required />
+                                {errors && <h1 className='text-red-800'>{errors}</h1>}
+                                <div><a className="link link-hover">Forgot password?</a></div>
+                                <div>Haven't Account ?. go to <Link to='/auth/register' className='link link-hover'>registration</Link>.</div>
+
+                                <button type='submit' className="btn btn-neutral mt-4">Login</button>
+                            </fieldset>
                         </form>
                     </div>
                 </div>

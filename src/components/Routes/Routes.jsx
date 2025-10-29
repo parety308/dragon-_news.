@@ -8,15 +8,18 @@ import NewsDetails from "../NewsDetails/NewsDetails";
 import LogIn from "../LogIn/LogIn";
 import Register from "../Register/Register";
 import AuthLayout from "../../Layout/AuthLayout";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: Root,
         loader: () => fetch('/categories.json'),
+         hydrateFallbackElement: <div className="flex justify-center items-center min-h-screen"><span className="loading loading-bars loading-3xl"></span></div>,
         children: [
             {
                 path: '/',
                 loader: () => fetch('/news.json'),
+                 hydrateFallbackElement: <div className="flex justify-center items-center min-h-screen"><span className="loading loading-bars loading-3xl"></span></div>,
                 Component: HomeLayout
             },
             {
@@ -30,6 +33,7 @@ export const router = createBrowserRouter([
             {
                 path: 'categories/:id',
                 loader: () => fetch('/news.json'),
+                 hydrateFallbackElement: <div className="flex justify-center items-center min-h-screen"><span className="loading loading-bars loading-3xl"></span></div>,
                 Component: CategoriesNews
 
             }
@@ -52,6 +56,7 @@ export const router = createBrowserRouter([
     {
         path: '/newDetails/:id',
         loader: () => fetch('/news.json'),
-        Component: NewsDetails
+        hydrateFallbackElement: <div className="flex justify-center items-center min-h-screen"><span className="loading loading-bars loading-3xl"></span></div>,
+        element: <PrivateRoute><NewsDetails></NewsDetails></PrivateRoute>
     }
 ])

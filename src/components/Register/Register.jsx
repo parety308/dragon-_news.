@@ -1,14 +1,31 @@
 import React, { use } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../../Provider/AuthProvider';
 
 const Register = () => {
-    const { createUser } = use(AuthContext);
+    const { createUser, updateUser, setUser } = use(AuthContext);
+    const navigate=useNavigate();
     const handleRegister = (event) => {
         event.preventDefault();
-        const email = event.target.email.value;
+        const name = event.target.name.value;
+        const photoUrl = event.target.photoUrl.value;
         const password = event.target.password.value;
-        createUser(email, password);
+        const email = event.target.email.value;
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                updateUser({ displayName: name, photoURL: photoUrl })
+                    .then(() => {
+                        setUser({ ...user, displayName: name, photoURL: photoUrl });
+                        navigate('/')
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        setUser(user);
+                    });
+            })
+            .catch(error => console.log(error));
+
         event.target.reset();
     }
     return (
@@ -23,6 +40,8 @@ const Register = () => {
                             <fieldset className="fieldset text-xl">
                                 <label className="label ">Name</label>
                                 <input type="text" name='name' className="input" placeholder="Write Your Full Name" />
+                                <label className="label ">PhotoURL</label>
+                                <input type="text" name='photoUrl' className="input" placeholder="Write Your Photo URL" />
                                 <label className="label ">Email</label>
                                 <input type="email" name='email' className="input" placeholder=" Enter Your Email Address" />
                                 <label className="label">New Password</label>
