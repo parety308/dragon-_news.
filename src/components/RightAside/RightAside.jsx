@@ -4,18 +4,21 @@ import swimImg from '../../assets/swimming.png';
 import clsImg from '../../assets/class.png';
 import playImg from '../../assets/playground.png';
 import bgImg from '../../assets/bg.png'
-import { GoogleAuthProvider } from 'firebase/auth';
+import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import { AuthContext } from '../../Provider/AuthProvider';
 const RightAside = () => {
-    const {createUserG}=use(AuthContext);
-    const googleProvider= new GoogleAuthProvider();
+    const { createUserG, createUserGit } = use(AuthContext);
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
     const handleGoogleLogIn = () => {
         createUserG(googleProvider)
-        .then(res=>console.log(res.user))
-        .catch(error=>console.log(error));
+            .then(res => console.log(res.user))
+            .catch(error => console.log(error));
     };
     const handleGithubLogIn = () => {
-        console.log('Github log in ');
+        createUserGit(githubProvider)
+            .then(res => console.log(res.user))
+            .catch(error => console.log(error));
     }
     return (
         <div className='p-2'>
@@ -36,9 +39,9 @@ const RightAside = () => {
             <div className='mt-5'>
                 <h1 className="text-3xl mb-2">FInd Us</h1>
                 <div className="join join-vertical w-[70%] gap-2">
-                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaFacebook/>  FaceBook</button>
-                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaTwitter/> Twitter</button>
-                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaInstagram/> Instagram</button>
+                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaFacebook />  FaceBook</button>
+                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaTwitter /> Twitter</button>
+                    <button className="btn join-item bg-base-100 flex justify-start items-center"><FaInstagram /> Instagram</button>
                 </div>
             </div>
             <div className="">
@@ -46,7 +49,7 @@ const RightAside = () => {
                 <img src={clsImg} alt="" />
                 <img src={playImg} alt="" />
                 <img src={bgImg} alt="" />
-                </div>
+            </div>
         </div>
     );
 };

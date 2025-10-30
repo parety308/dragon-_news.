@@ -10,9 +10,12 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password);
 
     };
-    const createUserG=(provider)=>{
-        return signInWithPopup(auth,provider);
+    const createUserG = (provider) => {
+        return signInWithPopup(auth, provider);
 
+    }
+    const createUserGit = (provider) => {
+        return signInWithPopup(auth, provider);
     }
     useEffect(() => {
         const unSuscribe = onAuthStateChanged((auth), (currentUser) => {
@@ -40,6 +43,7 @@ const AuthProvider = ({ children }) => {
         logOutUser,
         updateUser,
         createUserG,
+        createUserGit,
     };
     return (
         <div>
